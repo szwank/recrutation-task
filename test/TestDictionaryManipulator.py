@@ -102,3 +102,40 @@ class TestDictionaryManipulator:
         with pytest.raises(ValueError):
             result = dict_manipulator.get_from_dictionary(dictionary, path)
 
+    def test_remove_key_when_no_nesting(self):
+        dict_manipulator = DictionaryManipulator()
+        dictionary = {'file1': 'picture.png',
+                      'folder1': {'folder2': {'file2': 'picture2.jpg', 'file3': 'picture3.png'},
+                                  'file4': 'install.exe'}}
+        path = 'file1'
+        expected_result = {'folder1': {'folder2': {'file2': 'picture2.jpg', 'file3': 'picture3.png'},
+                                       'file4': 'install.exe'}}
+
+        dict_manipulator.remove_key(dictionary, path)
+
+        assert dictionary == expected_result
+
+    def test_remove_key_with_nesting(self):
+        dict_manipulator = DictionaryManipulator()
+        dictionary = {'file1': 'picture.png',
+                      'folder1': {'folder2': {'file2': 'picture2.jpg', 'file3': 'picture3.png'},
+                                  'file4': 'install.exe'}}
+        path = 'folder1/:file4'
+        expected_result = {'file1': 'picture.png',
+                           'folder1': {'folder2': {'file2': 'picture2.jpg', 'file3': 'picture3.png'}}}
+
+        dict_manipulator.remove_key(dictionary, path)
+
+        assert dictionary == expected_result
+
+    def test_remove_key_with_nesting(self):
+        dict_manipulator = DictionaryManipulator()
+        dictionary = {'file1': 'picture.png',
+                      'folder1': {'folder2': {'file2': 'picture2.jpg', 'file3': 'picture3.png'},
+                                  'file4': 'install.exe'}}
+        path = 'folder1/:asd'
+
+        with pytest.raises(KeyError):
+            dict_manipulator.remove_key(dictionary, path)
+
+

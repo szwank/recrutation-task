@@ -71,9 +71,9 @@ class DictionaryManipulator:
         if self.__is_nested(parsed_path):
             internal_dictionary = self.get_from_dictionary(dictionary, self.__cut_last_key(path))
 
-            internal_dictionary.pop(last_key, None)
+            del internal_dictionary[last_key]
         else:
-            dictionary.pop(last_key, None)
+            del dictionary[last_key]
 
 class ElementDontExist:
     """Class indicating no element when fetching one by class DictionaryManipulator"""
