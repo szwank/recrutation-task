@@ -1,12 +1,14 @@
 import re
 
 from .DayOfBirth import DayOfBirth
+from .Location import Location
+from .Login import Login
 from .Registered import Registered
 from .ID import ID
 
 
 class Person:
-    def __init__(self, gender: str, name: str, location: str, email: str, login: str, dob: DayOfBirth,
+    def __init__(self, gender: str, name: str, location: Location, email: str, login: Login, dob: DayOfBirth,
                  registered: Registered, phone: str, cell: str, id: ID, nat):
         self.gender = gender
         self.name = name
