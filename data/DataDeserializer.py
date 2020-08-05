@@ -1,24 +1,24 @@
-from .Coordinates import Coordinates
-from .Person import Person
-from .DayOfBirth import DayOfBirth
-from .ID import ID
-from .Location import Location
-from .Login import Login
-from .Registered import Registered
-from .Street import Street
-from .TimeZone import TimeZone
+from .CoordinatesData import CoordinatesData
+from .PersonData import PersonData
+from .DayOfBirthData import DayOfBirthData
+from .IDData import IDData
+from .LocationData import LocationData
+from .LoginData import LoginData
+from .RegisteredData import RegisteredData
+from .StreetData import StreetData
+from .TimeZoneData import TimeZoneData
 
 
 class DataDeserializer:
 
     @staticmethod
-    def deserialize(data: dict) -> Person:
+    def deserialize(data: dict) -> PersonData:
         location = DataDeserializer.__get_location(data)
 
-        login = Login(**data['login'])
-        day_of_birth = DayOfBirth(**data['dob'])
-        registered = Registered(**data['registered'])
-        id = ID(**data['id'])
+        login = LoginData(**data['login'])
+        day_of_birth = DayOfBirthData(**data['dob'])
+        registered = RegisteredData(**data['registered'])
+        id = IDData(**data['id'])
 
         data_container_args = data.copy()
         data_container_args['login'] = login
@@ -28,17 +28,17 @@ class DataDeserializer:
         data_container_args['location'] = location
         data_container_args.pop('picture', None)
 
-        return Person(**data_container_args)
+        return PersonData(**data_container_args)
 
     @staticmethod
     def __get_location(data):
-        street = Street(**data['location']['street'])
-        coordinates = Coordinates(**data['location']['coordinates'])
-        timezone = TimeZone(**data['location']['timezone'])
+        street = StreetData(**data['location']['street'])
+        coordinates = CoordinatesData(**data['location']['coordinates'])
+        timezone = TimeZoneData(**data['location']['timezone'])
 
         location_args = data['location'].copy()
         location_args['street'] = street
         location_args['coordinates'] = coordinates
         location_args['timezone'] = timezone
 
-        return Location(**location_args)
+        return LocationData(**location_args)

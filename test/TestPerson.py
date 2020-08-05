@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from data.Person import Person
+from data.PersonData import PersonData
 
 
 class TestPerson:
@@ -28,7 +28,7 @@ class TestPerson:
         person_args = self.person_args.copy()
         person_args['phone'] = number
 
-        person = Person(**person_args)
+        person = PersonData(**person_args)
 
         assert person.clean_number == expected
 

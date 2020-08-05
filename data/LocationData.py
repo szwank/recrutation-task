@@ -1,11 +1,11 @@
-from .Coordinates import Coordinates
-from .Street import Street
-from .TimeZone import TimeZone
+from .CoordinatesData import CoordinatesData
+from .StreetData import StreetData
+from .TimeZoneData import TimeZoneData
 
 
-class Location:
-    def __init__(self, street: Street, city: str, state: str, country: str, postcode: int, coordinates: Coordinates,
-                 timezone: TimeZone):
+class LocationData:
+    def __init__(self, street: StreetData, city: str, state: str, country: str, postcode: int, coordinates: CoordinatesData,
+                 timezone: TimeZoneData):
         self.street = street
         self.city = city
         self.state = state

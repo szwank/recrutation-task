@@ -1,5 +1,5 @@
 
-class Login:
+class LoginData:
     def __init__(self, uuid: str, username: str, password: str, salt: str, md5: str, sha1: str, sha256: str):
         self.uuid = uuid
         self.username = username

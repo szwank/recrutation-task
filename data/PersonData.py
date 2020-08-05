@@ -1,15 +1,15 @@
 import re
 
-from .DayOfBirth import DayOfBirth
-from .Location import Location
-from .Login import Login
-from .Registered import Registered
-from .ID import ID
+from .DayOfBirthData import DayOfBirthData
+from .LocationData import LocationData
+from .LoginData import LoginData
+from .RegisteredData import RegisteredData
+from .IDData import IDData
 
 
-class Person:
-    def __init__(self, gender: str, name: str, location: Location, email: str, login: Login, dob: DayOfBirth,
-                 registered: Registered, phone: str, cell: str, id: ID, nat):
+class PersonData:
+    def __init__(self, gender: str, name: str, location: LocationData, email: str, login: LoginData, dob: DayOfBirthData,
+                 registered: RegisteredData, phone: str, cell: str, id: IDData, nat):
         self.gender = gender
         self.name = name
         self.location = location

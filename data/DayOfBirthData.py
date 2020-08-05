@@ -3,7 +3,7 @@ import datetime
 from DateManipulator import DateManipulator
 
 
-class DayOfBirth:
+class DayOfBirthData:
     def __init__(self, date: str, age: int):
         self.date = self.str_to_datetime(date)
         self.age = age

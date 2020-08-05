@@ -1,4 +1,4 @@
-class Name:
+class NameData:
     def __init__(self, title: str, first: str, last: str):
         self.title = title
         self.first = first
