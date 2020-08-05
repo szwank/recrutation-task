@@ -1,4 +1,5 @@
 from .CoordinatesData import CoordinatesData
+from .NameData import NameData
 from .PersonData import PersonData
 from .DayOfBirthData import DayOfBirthData
 from .IDData import IDData
@@ -17,6 +18,7 @@ class DataDeserializer:
 
         login = LoginData(**data['login'])
         day_of_birth = DayOfBirthData(**data['dob'])
+        name = NameData(**data['name'])
         registered = RegisteredData(**data['registered'])
         id = IDData(**data['id'])
 
@@ -26,6 +28,7 @@ class DataDeserializer:
         data_container_args['registered'] = registered
         data_container_args['id'] = id
         data_container_args['location'] = location
+        data_container_args['name'] = name
         data_container_args.pop('picture', None)
 
         return PersonData(**data_container_args)
