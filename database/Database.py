@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from .tables.base import Base
 # imports needed for Database class to initialize tables correctly
 from database.tables.DayOfBirth import DayOfBirth
+from database.tables.Name import Name
 from database.tables.Person import Person
 from database.tables.Login import Login
 from database.tables.Registered import Registered

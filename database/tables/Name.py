@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, VARCHAR, ForeignKey
 from sqlalchemy.orm import relationship
 
 from data.NameData import NameData
@@ -8,12 +8,12 @@ from .base import Base
 
 
 class Name(Base):
-    __tablename__ = 'login'
+    __tablename__ = 'name'
 
     id = Column(Integer, primary_key=True)
-    title = Column(Integer)
-    first = Column(Integer)
-    last = Column(Integer)
+    title = Column(VARCHAR)
+    first = Column(VARCHAR)
+    last = Column(VARCHAR)
     person_id = Column(Integer, ForeignKey('person.id'))
 
     person = relationship("Person", back_populates="name_relationship")
