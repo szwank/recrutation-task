@@ -12,14 +12,13 @@ class Person(Base):
 
     id = Column(Integer, primary_key=True)
     gender = Column(String)
-    name = Column(String)
     email = Column(String)
     phone = Column(String)
     cell = Column(String)
     nat = Column(String)
 
     login = relationship("Login", back_populates="person")
-    name_relationship = relationship("Login", back_populates="person")
+    name = relationship("Name", back_populates="person")
     day_of_birth = relationship("DayOfBirth", back_populates="person")
     registered = relationship("Registered", back_populates="person")
     id_relationship = relationship("ID", back_populates="person")
@@ -33,7 +32,6 @@ class Person(Base):
     def from_data(cls, data: PersonData) -> Person:
         """Creates instance of class from PersonData object"""
         return cls(gender=data.gender,
-                   name=data.name,
                    email=data.email,
                    phone=data.phone,
                    cell=data.cell,

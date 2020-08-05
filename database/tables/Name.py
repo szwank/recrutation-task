@@ -16,7 +16,7 @@ class Name(Base):
     last = Column(VARCHAR)
     person_id = Column(Integer, ForeignKey('person.id'))
 
-    person = relationship("Person", back_populates="name_relationship")
+    person = relationship("Person", back_populates="name")
 
     def __repr__(self):
         return f"<Name(title={self.title}, first={self.first}, last={self.last})>"
