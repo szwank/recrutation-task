@@ -3,12 +3,13 @@ import re
 from .DayOfBirthData import DayOfBirthData
 from .LocationData import LocationData
 from .LoginData import LoginData
+from .NameData import NameData
 from .RegisteredData import RegisteredData
 from .IDData import IDData
 
 
 class PersonData:
-    def __init__(self, gender: str, name: str, location: LocationData, email: str, login: LoginData, dob: DayOfBirthData,
+    def __init__(self, gender: str, name: NameData, location: LocationData, email: str, login: LoginData, dob: DayOfBirthData,
                  registered: RegisteredData, phone: str, cell: str, id: IDData, nat):
         self.gender = gender
         self.name = name
