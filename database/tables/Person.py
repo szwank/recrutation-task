@@ -25,7 +25,7 @@ class Person(Base):
     location = relationship("Location", back_populates="person")
 
     def __repr__(self):
-        return f"<Person(name={self.name}, gender={self.gender}, email={self.email}, phone={self.phone}," \
+        return f"<Person(gender={self.gender}, email={self.email}, phone={self.phone}," \
                f" cell={self.cell}, nat={self.nat})>"
 
     @classmethod
