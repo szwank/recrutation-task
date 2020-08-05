@@ -13,13 +13,13 @@ class Person(Base):
     id = Column(Integer, primary_key=True)
     gender = Column(String)
     name = Column(String)
-    # location_id =
     email = Column(String)
     phone = Column(String)
     cell = Column(String)
     nat = Column(String)
 
     login = relationship("Login", back_populates="person")
+    name_relationship = relationship("Login", back_populates="person")
     day_of_birth = relationship("DayOfBirth", back_populates="person")
     registered = relationship("Registered", back_populates="person")
     id_id = relationship("ID", back_populates="person")
