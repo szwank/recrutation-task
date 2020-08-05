@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 from .tables.base import Base
 # imports needed for Database class to initialize tables correctly
@@ -19,11 +19,11 @@ class Database:
         self.__engine = create_engine(f'sqlite:///{filepath}', *args, **kwargs)
         self.__Session = sessionmaker(bind=self.__engine)
 
-    def get_session(self):
+    def get_session(self) -> Session:
         """Returns connection session"""
         return self.__Session()
 
-    def create_missing_tables(self):
+    def create_missing_tables(self) -> None:
         """Create all tables base on classes that inherent from Base class instance."""
         Base.metadata.create_all(self.__engine)
 
