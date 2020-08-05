@@ -15,7 +15,7 @@ class ID(Base):
     value = Column(Integer)
     person_id = Column(Integer, ForeignKey('person.id'))
 
-    person = relationship("Person", back_populates="id_id")
+    person = relationship("Person", back_populates="id_relationship")
 
     def __repr__(self):
         return f"<ID(name={self.name}, value={self.value})>"

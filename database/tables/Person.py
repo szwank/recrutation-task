@@ -22,7 +22,7 @@ class Person(Base):
     name_relationship = relationship("Login", back_populates="person")
     day_of_birth = relationship("DayOfBirth", back_populates="person")
     registered = relationship("Registered", back_populates="person")
-    id_id = relationship("ID", back_populates="person")
+    id_relationship = relationship("ID", back_populates="person")
     location = relationship("Location", back_populates="person")
 
     def __repr__(self):
