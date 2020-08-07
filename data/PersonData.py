@@ -10,7 +10,7 @@ from .IDData import IDData
 
 class PersonData:
     def __init__(self, gender: str, name: NameData, location: LocationData, email: str, login: LoginData, dob: DayOfBirthData,
-                 registered: RegisteredData, phone: str, cell: str, id: IDData, nat):
+                 registered: RegisteredData, phone: str, cell: str, id: IDData, nat: str):
         self.gender = gender
         self.name = name
         self.location = location
@@ -24,7 +24,7 @@ class PersonData:
         self.nat = nat
 
     @property
-    def clean_number(self):
+    def clean_phone_number(self):
         return self.__remove_special_characters(self.phone)
 
     @staticmethod
