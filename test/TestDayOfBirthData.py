@@ -4,7 +4,7 @@ from data.DayOfBirthData import DayOfBirthData
 from DateManipulator import DateManipulator
 
 
-class TestDayOfBirth:
+class TestDayOfBirthData:
 
     def test_date_str_to_datetime_conversion(self):
         day_of_birth = DayOfBirthData('1966-06-26T11:50:25.558Z', 54)
