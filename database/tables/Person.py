@@ -13,7 +13,7 @@ class Person(Base):
     id = Column(Integer, primary_key=True)
     gender = Column(String)
     email = Column(String)
-    phone = Column(String)
+    phone = Column(Integer)
     cell = Column(String)
     nat = Column(String)
 
@@ -33,6 +33,6 @@ class Person(Base):
         """Creates instance of class from PersonData object"""
         return cls(gender=data.gender,
                    email=data.email,
-                   phone=data.phone,
+                   phone=data.clean_phone_number,
                    cell=data.cell,
                    nat=data.nat)
