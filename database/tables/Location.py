@@ -20,6 +20,7 @@ class Location(Base):
     person = relationship("Person", back_populates="location")
     coordinates = relationship("Coordinates", back_populates="location")
     timezone = relationship("TimeZone", back_populates="location")
+    street = relationship("Street", back_populates="location")
 
     def __repr__(self):
         return f"<Location(city={self.city}, state={self.state}, country={self.country}, postcode={self.postcode})>"

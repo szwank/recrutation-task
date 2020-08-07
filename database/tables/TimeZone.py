@@ -11,7 +11,7 @@ class TimeZone(Base):
     __tablename__ = 'timezone'
 
     id = Column(Integer, primary_key=True)
-    time = Column(VARCHAR)
+    offset = Column(VARCHAR)
     description = Column(VARCHAR)
     location_id = Column(Integer, ForeignKey('location.id'))
 
@@ -23,5 +23,5 @@ class TimeZone(Base):
     @classmethod
     def from_data(cls, data: TimeZoneData) -> TimeZone:
         """Creates instance of class from TimeZoneData object"""
-        return cls(time=data.time,
+        return cls(offset=data.offset,
                    description=data.description)

@@ -12,6 +12,7 @@ from database.tables.ID import ID
 from database.tables.Location import Location
 from database.tables.Coordinates import Coordinates
 from database.tables.TimeZone import TimeZone
+from database.tables.Street import Street
 
 
 class Database:

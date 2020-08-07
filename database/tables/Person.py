@@ -13,7 +13,7 @@ class Person(Base):
     id = Column(Integer, primary_key=True)
     gender = Column(String)
     email = Column(String)
-    phone = Column(Integer)
+    phone = Column(String)
     cell = Column(String)
     nat = Column(String)
 
