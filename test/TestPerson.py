@@ -30,5 +30,5 @@ class TestPerson:
 
         person = PersonData(**person_args)
 
-        assert person.clean_number == expected
+        assert person.clean_phone_number == expected
 
