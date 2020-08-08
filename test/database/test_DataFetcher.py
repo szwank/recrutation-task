@@ -1,3 +1,5 @@
+import pytest
+
 from database.Database import Database
 from database.tables.DayOfBirth import DayOfBirth
 from database.tables.Location import Location
@@ -111,6 +113,7 @@ class TestDataFetcher:
 
         assert set(values) == set(expected)
 
+
     def test_get_most_popular_cities_fetch_many_city_when_there_is_many(self):
         database = Database(':memory:')
         session = database.get_session()
@@ -158,12 +161,12 @@ class TestDataFetcher:
         database = Database(':memory:')
         session = database.get_session()
 
-        locations = []
-        locations.append(Login(password='tricky'))
-        locations.append(Login(password='tricky'))
-        locations.append(Login(password='thrasher'))
+        logins = []
+        logins.append(Login(password='tricky'))
+        logins.append(Login(password='tricky'))
+        logins.append(Login(password='thrasher'))
 
-        session.add_all(locations)
+        session.add_all(logins)
         session.commit()
 
         data_fetcher = DataFetcher(database)
@@ -177,12 +180,12 @@ class TestDataFetcher:
         database = Database(':memory:')
         session = database.get_session()
 
-        locations = []
-        locations.append(Login(password='tricky'))
-        locations.append(Login(password='tricky'))
-        locations.append(Login(password='thrasher'))
+        logins = []
+        logins.append(Login(password='tricky'))
+        logins.append(Login(password='tricky'))
+        logins.append(Login(password='thrasher'))
 
-        session.add_all(locations)
+        session.add_all(logins)
         session.commit()
 
         data_fetcher = DataFetcher(database)
@@ -191,3 +194,32 @@ class TestDataFetcher:
         expected = [('tricky', 2), ('thrasher', 1)]
 
         assert set(values) == set(expected)
+
+    passwords_strength = [
+        (['Aricky', 'a'], 'Aricky'),
+        (['Aricky', 'aaGs4'], 'aaGs4'),
+        (['supertajne', 'aaGs4'], 'supertajne'),
+        (['supe%', 'aaGs'], 'supe%'),
+        (['supert@jne', 'acQs4+'], 'supert@jne'),
+        (['supert@jne', 'acQs4%', 'suPadrt@jne7'], 'suPadrt@jne7'),
+        (['asd', 'asd', 'asd', 'yes5'], 'yes5'),
+        (['aSaD', 'asd', 'Des5'], 'Des5'),
+    ]
+
+    @pytest.mark.parametrize('passwords,expected', passwords_strength)
+    def test_get_strongest_password(self, passwords, expected):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        logins = []
+        for password in passwords:
+            logins.append(Login(password=password))
+
+        session.add_all(logins)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_strongest_password()
+
+        assert set(values) == set([(expected, )])

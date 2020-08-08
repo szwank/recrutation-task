@@ -26,6 +26,8 @@ class Manager:
             self.__show_most_popular_cities(self.options.get_cities_popularity)
         elif self.options.get_password_popularity:
             self.__show_most_popular_passwords(self.options.get_password_popularity)
+        elif self.options.get_strongest_password:
+            self.__show_strongest_password()
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
@@ -74,6 +76,14 @@ class Manager:
         """Fetch data about n most popular passwords and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_most_popular_passwords(how_much)
+
+        pretty_table = PrettyTable(columns_names)
+        pretty_table.show(information)
+
+    def __show_strongest_password(self):
+        """Fetch data about n most popular passwords and prints it"""
+        data_fetcher = DataFetcher(self.__database)
+        information, columns_names = data_fetcher.get_strongest_password()
 
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)

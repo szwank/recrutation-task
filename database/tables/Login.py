@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 
 from .base import Base
 from data.LoginData import LoginData
-
+from database.types.String import String as StringRegex
 
 class Login(Base):
     __tablename__ = 'login'
@@ -13,7 +13,7 @@ class Login(Base):
     id = Column(Integer, primary_key=True)
     uuid = Column(String)
     username = Column(String)
-    password = Column(String)
+    password = Column(StringRegex)
     salt = Column(String)
     md5 = Column(String)
     sha1 = Column(String)

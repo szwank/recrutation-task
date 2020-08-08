@@ -51,7 +51,6 @@ class DataFetcher:
             .join(DayOfBirth)\
             .group_by(Person.gender)
 
-
         avg_age_on_all = session.query(literal('both').label('gender'), func.avg(DayOfBirth.age).label('age')) \
             .select_from(Person) \
             .join(DayOfBirth)
@@ -82,3 +81,38 @@ class DataFetcher:
             .order_by(desc(func.count(1))) \
             .limit(how_much)
         return self.__get_query_result(popular_passwords)
+
+    def get_strongest_password(self):
+        """Returns strongest person password. Information is fetched from table Login."""
+        session = self.__get_session()
+
+        have_lowercase_letter = session.query(Login.password.label('password'), literal(1).label('points'))\
+            .distinct(Login.password) \
+            .filter(func.upper(Login.password) != Login.password)
+
+        have_uppercase_letter = session.query(Login.password.label('password'), literal(2).label('points')) \
+            .distinct(Login.password) \
+            .filter(func.lower(Login.password) != Login.password)
+
+        have_number = session.query(Login.password.label('password'), literal(1).label('points')) \
+            .distinct(Login.password) \
+            .filter(Login.password.regexp('.*[0-9].*'))
+
+        have_8_letters_or_more = session.query(Login.password.label('password'), literal(5).label('points')) \
+            .distinct(Login.password) \
+            .filter(func.length(Login.password) >= 8)
+
+        have_special_character = session.query(Login.password.label('password'), literal(3).label('points')) \
+            .distinct(Login.password) \
+            .filter(Login.password.regexp('.*[|\^&+\-%*/=!>\%~@#$():;".,/+[\]{}].*'))
+
+        points = have_lowercase_letter.union_all(have_uppercase_letter, have_number, have_8_letters_or_more,
+                                                 have_special_character).subquery()
+
+        passwords_points = session.query(points.c.password)\
+            .select_from(points)\
+            .group_by(points.c.password)\
+            .order_by(desc(func.sum(points.c.points)))\
+            .limit(1)
+
+        return self.__get_query_result(passwords_points)
