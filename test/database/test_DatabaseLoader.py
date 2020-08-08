@@ -85,7 +85,7 @@ class TestDatabaseLoader:
     def test_add_location_data_add_tables(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         location = self.get_location_data()
@@ -112,7 +112,7 @@ class TestDatabaseLoader:
     def test_add_location_data_set_coordinates_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         location = self.get_location_data()
@@ -128,7 +128,7 @@ class TestDatabaseLoader:
     def test_add_location_data_set_timezone_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         location = self.get_location_data()
@@ -144,7 +144,7 @@ class TestDatabaseLoader:
     def test_add_location_data_set_location_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         location = self.get_location_data()
@@ -162,7 +162,7 @@ class TestDatabaseLoader:
     def test_add_person_data_add_all_tables(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -197,7 +197,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_person_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -213,7 +213,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_name_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -228,7 +228,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_login_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -247,7 +247,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_day_of_birth_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -262,7 +262,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_registered_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -277,7 +277,7 @@ class TestDatabaseLoader:
     def test_load_person_data_set_id_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.create_missing_tables()
+        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -287,3 +287,26 @@ class TestDatabaseLoader:
 
         assert result.name == expected['name']
         assert result.value == expected['value']
+
+
+    def test_load_many_persons_data(self):
+        database = Database(':memory:')
+        session = database.get_session()
+        database.___create_missing_tables()
+        database_loader = DatabaseLoader(database)
+
+        persons = [self.get_person_data(), self.get_person_data()]
+        database_loader.load_many_persons_data(persons)
+
+        session.query()
+
+        assert len(session.query(Location).all()) == 2
+        assert len(session.query(Name).all()) == 2
+        assert len(session.query(Login).all()) == 2
+        assert len(session.query(DayOfBirth).all()) == 2
+        assert len(session.query(Registered).all()) == 2
+        assert len(session.query(ID).all()) == 2
+        assert len(session.query(Person).all()) == 2
+        assert len(session.query(TimeZone).all()) == 2
+        assert len(session.query(Coordinates).all()) == 2
+        assert len(session.query(Street).all()) == 2
