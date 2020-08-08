@@ -24,13 +24,18 @@ class Options:
                                  dest="get_cities_popularity",
                                  nargs='?',
                                  type=int,
-                                 help="Returns average age of genders and overall average age.")
+                                 help="Returns n most popular cities.")
 
         self.parser.add_argument("--password_popularity", "-p",
                                  dest="get_password_popularity",
                                  nargs='?',
                                  type=int,
-                                 help="Returns average age of genders and overall average age.")
+                                 help="Returns n most popular passwords.")
+
+        self.parser.add_argument("--strongest_password", "-sp",
+                                 dest="get_strongest_password",
+                                 action='store_true',
+                                 help="Returns strongest password in database.")
 
         self.arguments = self.parser.parse_args()
 
