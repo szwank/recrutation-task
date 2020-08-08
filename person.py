@@ -1,11 +1,15 @@
 from Manager import Manager
 from Options import Options
+from database.Database import Database
 
 
 def main():
     options = Options()
     args = options.get_arguments()
-    manager = Manager(args)
+
+    database = Database()
+
+    manager = Manager(args, database)
     manager.run()
 
 

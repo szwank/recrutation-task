@@ -11,7 +11,7 @@ class Options:
                                  help="Create database if needed and load data from passed path.")
 
         self.parser.add_argument("--gender_percentage", "-gp",
-                                 dest="gender_percentage",
+                                 dest="get_gender_percentage",
                                  help="Returns gender percentage loaded to database.")
 
         self.parser.add_argument("--average_age", "-a",
