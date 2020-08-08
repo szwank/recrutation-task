@@ -25,6 +25,7 @@ from database.tables.TimeZone import TimeZone
 
 
 class TestDatabaseLoader:
+
     data = {
         "gender": "female",
         "name": {
@@ -81,100 +82,18 @@ class TestDatabaseLoader:
         },
         "nat": "FR"
     }
-
-    def test_add_location_data_add_tables(self):
+    def test_load_person_data_add_tables(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
-        database_loader = DatabaseLoader(database)
-
-        location = self.get_location_data()
-        database_loader.load_location_data(location)
-
-        assert len(session.query(Location).all()) == 1
-        assert len(session.query(TimeZone).all()) == 1
-        assert len(session.query(Coordinates).all()) == 1
-        assert len(session.query(Street).all()) == 1
-
-    def get_location_data(self) -> LocationData:
-        data = self.data['location'].copy()
-
-        timezone = TimeZoneData(**data['timezone'])
-        coordinates = CoordinatesData(**data['coordinates'])
-        street = StreetData(**data['street'])
-
-        data['timezone'] = timezone
-        data['coordinates'] = coordinates
-        data['street'] = street
-
-        return LocationData(**data)
-
-    def test_add_location_data_set_coordinates_table_row(self):
-        database = Database(':memory:')
-        session = database.get_session()
-        database.___create_missing_tables()
-        database_loader = DatabaseLoader(database)
-
-        location = self.get_location_data()
-
-        expected = self.data['location']['coordinates']
-
-        database_loader.load_location_data(location)
-        result = session.query(Coordinates).first()
-
-        assert result.latitude == expected['latitude']
-        assert result.longitude == expected['longitude']
-
-    def test_add_location_data_set_timezone_table_row(self):
-        database = Database(':memory:')
-        session = database.get_session()
-        database.___create_missing_tables()
-        database_loader = DatabaseLoader(database)
-
-        location = self.get_location_data()
-
-        expected = self.data['location']['timezone']
-
-        database_loader.load_location_data(location)
-        result = session.query(TimeZone).first()
-
-        assert result.offset == expected['offset']
-        assert result.description == expected['description']
-
-    def test_add_location_data_set_location_table_row(self):
-        database = Database(':memory:')
-        session = database.get_session()
-        database.___create_missing_tables()
-        database_loader = DatabaseLoader(database)
-
-        location = self.get_location_data()
-
-        expected = self.data['location']
-
-        database_loader.load_location_data(location)
-        result = session.query(Location).first()
-
-        assert result.city == expected['city']
-        assert result.state == expected['state']
-        assert result.country == expected['country']
-        assert result.postcode == expected['postcode']
-
-    def test_add_person_data_add_all_tables(self):
-        database = Database(':memory:')
-        session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
         database_loader.load_person_data(person)
 
         assert len(session.query(Location).all()) == 1
-        assert len(session.query(Name).all()) == 1
-        assert len(session.query(Login).all()) == 1
-        assert len(session.query(DayOfBirth).all()) == 1
-        assert len(session.query(Registered).all()) == 1
-        assert len(session.query(ID).all()) == 1
-        assert len(session.query(Person).all()) == 1
+        assert len(session.query(TimeZone).all()) == 1
+        assert len(session.query(Coordinates).all()) == 1
+        assert len(session.query(Street).all()) == 1
 
     def get_person_data(self):
         login = LoginData(**self.data['login'])
@@ -194,10 +113,85 @@ class TestDatabaseLoader:
 
         return PersonData(**data_container_args)
 
+    def get_location_data(self) -> LocationData:
+        data = self.data['location'].copy()
+
+        timezone = TimeZoneData(**data['timezone'])
+        coordinates = CoordinatesData(**data['coordinates'])
+        street = StreetData(**data['street'])
+
+        data['timezone'] = timezone
+        data['coordinates'] = coordinates
+        data['street'] = street
+
+        return LocationData(**data)
+
+    def test_load_person_data_set_coordinates_table_row(self):
+        database = Database(':memory:')
+        session = database.get_session()
+        database_loader = DatabaseLoader(database)
+
+        person = self.get_person_data()
+
+        expected = self.data['location']['coordinates']
+
+        database_loader.load_person_data(person)
+        result = session.query(Coordinates).first()
+
+        assert result.latitude == expected['latitude']
+        assert result.longitude == expected['longitude']
+
+    def test_load_person_data_set_timezone_table_row(self):
+        database = Database(':memory:')
+        session = database.get_session()
+        database_loader = DatabaseLoader(database)
+
+        person = self.get_person_data()
+
+        expected = self.data['location']['timezone']
+
+        database_loader.load_person_data(person)
+        result = session.query(TimeZone).first()
+
+        assert result.offset == expected['offset']
+        assert result.description == expected['description']
+
+    def test_load_person_data_set_location_table_row(self):
+        database = Database(':memory:')
+        session = database.get_session()
+        database_loader = DatabaseLoader(database)
+
+        person = self.get_person_data()
+
+        expected = self.data['location']
+
+        database_loader.load_person_data(person)
+        result = session.query(Location).first()
+
+        assert result.city == expected['city']
+        assert result.state == expected['state']
+        assert result.country == expected['country']
+        assert result.postcode == expected['postcode']
+
+    def test_load_person_data_add_all_tables(self):
+        database = Database(':memory:')
+        session = database.get_session()
+        database_loader = DatabaseLoader(database)
+
+        person = self.get_person_data()
+        database_loader.load_person_data(person)
+
+        assert len(session.query(Location).all()) == 1
+        assert len(session.query(Name).all()) == 1
+        assert len(session.query(Login).all()) == 1
+        assert len(session.query(DayOfBirth).all()) == 1
+        assert len(session.query(Registered).all()) == 1
+        assert len(session.query(ID).all()) == 1
+        assert len(session.query(Person).all()) == 1
+
     def test_load_person_data_set_person_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -213,7 +207,6 @@ class TestDatabaseLoader:
     def test_load_person_data_set_name_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -228,7 +221,6 @@ class TestDatabaseLoader:
     def test_load_person_data_set_login_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -247,7 +239,6 @@ class TestDatabaseLoader:
     def test_load_person_data_set_day_of_birth_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -262,7 +253,6 @@ class TestDatabaseLoader:
     def test_load_person_data_set_registered_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -277,7 +267,6 @@ class TestDatabaseLoader:
     def test_load_person_data_set_id_table_row(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         person = self.get_person_data()
@@ -292,7 +281,6 @@ class TestDatabaseLoader:
     def test_load_many_persons_data(self):
         database = Database(':memory:')
         session = database.get_session()
-        database.___create_missing_tables()
         database_loader = DatabaseLoader(database)
 
         persons = [self.get_person_data(), self.get_person_data()]

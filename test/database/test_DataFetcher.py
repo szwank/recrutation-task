@@ -8,7 +8,6 @@ class TestDataFetcher:
 
     def test_get_gender_percentage_mixed_gender(self):
         database = Database(':memory:')
-        database.___create_missing_tables()
         session = database.get_session()
 
         person_1 = Person(gender='female')
@@ -27,7 +26,6 @@ class TestDataFetcher:
 
     def test_get_gender_percentage_single_gender(self):
         database = Database(':memory:')
-        database.___create_missing_tables()
         session = database.get_session()
 
         person_1 = Person(gender='female')
@@ -45,7 +43,6 @@ class TestDataFetcher:
 
     def test_get_average_age_mixed_gender(self):
         database = Database(':memory:')
-        database.___create_missing_tables()
         session = database.get_session()
 
         person_1 = Person(gender='female')
@@ -68,7 +65,6 @@ class TestDataFetcher:
 
     def test_get_average_age_single_gender(self):
         database = Database(':memory:')
-        database.___create_missing_tables()
         session = database.get_session()
 
         person_1 = Person(gender='female')

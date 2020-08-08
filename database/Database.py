@@ -18,14 +18,17 @@ from database.tables.Street import Street
 class Database:
     """Class for database communication"""
     def __init__(self, filepath: str = 'database.dbo', *args, **kwargs):
+        self.__filepath = filepath
         self.__engine = create_engine(f'sqlite:///{filepath}', *args, **kwargs)
         self.__Session = sessionmaker(bind=self.__engine)
+
+        self.___create_missing_tables()
+
+    def ___create_missing_tables(self) -> None:
+        """Create all tables base on classes that inherent from Base class instance."""
+        Base.metadata.create_all(self.__engine)
 
     def get_session(self) -> Session:
         """Returns connection session"""
         return self.__Session()
-
-    def create_missing_tables(self) -> None:
-        """Create all tables base on classes that inherent from Base class instance."""
-        Base.metadata.create_all(self.__engine)
 

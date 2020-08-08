@@ -1,3 +1,5 @@
+from typing import List
+
 from data.LocationData import LocationData
 from data.PersonData import PersonData
 from database.Database import Database
@@ -18,35 +20,46 @@ class DatabaseLoader:
     def __init__(self, database: Database):
         self.__database = database
 
+    def load_many_persons_data(self, data: List[PersonData]) -> List[Person]:
+        persons = []
+
+        for person_data in data:
+            persons.append(self.__create_person(person_data))
+
+        session = self.__get_session()
+        session.add_all(persons)
+        session.commit()
+        session.close()
+
+        return persons
+
     def load_person_data(self, person_data: PersonData) -> Person:
         session = self.__get_session()
 
-        person = Person.from_data(person_data)
-
-        person.id_relationship = [ID.from_data(person_data.id)]
-        person.registered = [Registered.from_data(person_data.registered)]
-        person.login = [Login.from_data(person_data.login)]
-        person.day_of_birth = [DayOfBirth.from_data(person_data.day_of_birth)]
-        person.name = [Name.from_data(person_data.name)]
-        person.location = [self.load_location_data(person_data.location)]
+        person = self.__create_person(person_data)
 
         session.add(person)
         session.commit()
         session.close()
+
         return person
 
     def __get_session(self):
         return self.__database.get_session()
 
-    def load_location_data(self, location_data: LocationData) -> Location:
-        session = self.__get_session()
+    def __create_person(self, person_data: PersonData) -> Person:
+        person = Person.from_data(person_data)
+        person.id_relationship = [ID.from_data(person_data.id)]
+        person.registered = [Registered.from_data(person_data.registered)]
+        person.login = [Login.from_data(person_data.login)]
+        person.day_of_birth = [DayOfBirth.from_data(person_data.day_of_birth)]
+        person.name = [Name.from_data(person_data.name)]
+        person.location = [self.__create_location(person_data.location)]
+        return person
 
+    def __create_location(self, location_data: LocationData) -> Location:
         location = Location.from_data(location_data)
         location.timezone = [TimeZone.from_data(location_data.timezone)]
         location.coordinates = [Coordinates.from_data(location_data.coordinates)]
         location.street = [Street.from_data(location_data.street)]
-
-        session.add(location)
-        session.commit()
-        session.close()
         return location
