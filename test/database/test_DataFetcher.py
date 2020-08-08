@@ -1,6 +1,7 @@
 from database.Database import Database
 from database.tables.DayOfBirth import DayOfBirth
 from database.tables.Location import Location
+from database.tables.Login import Login
 from database.tables.Person import Person
 from database.DataFetcher import DataFetcher
 
@@ -60,7 +61,7 @@ class TestDataFetcher:
         data_fetcher = DataFetcher(database)
 
         values, columns = data_fetcher.get_average_age()
-        expected = [('female', 10), ('male', 20), ('All', 15)]
+        expected = [('female', 10), ('male', 20), ('both', 15)]
 
         assert set(values) == set(expected)
 
@@ -82,7 +83,7 @@ class TestDataFetcher:
         data_fetcher = DataFetcher(database)
 
         values, columns = data_fetcher.get_average_age()
-        expected = [('female', 15), ('All', 15)]
+        expected = [('female', 15), ('both', 15)]
 
         assert set(values) == set(expected)
 
@@ -150,5 +151,43 @@ class TestDataFetcher:
 
         values, columns = data_fetcher.get_most_popular_cities(4)
         expected = [('Sejny', 3)]
+
+        assert set(values) == set(expected)
+
+    def test_get_most_popular_passwords_fetch_one(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        locations = []
+        locations.append(Login(password='tricky'))
+        locations.append(Login(password='tricky'))
+        locations.append(Login(password='thrasher'))
+
+        session.add_all(locations)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_most_popular_passwords(1)
+        expected = [('tricky', 2)]
+
+        assert set(values) == set(expected)
+
+    def test_get_most_popular_passwords_when_fetching_more_than_is_in_database(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        locations = []
+        locations.append(Login(password='tricky'))
+        locations.append(Login(password='tricky'))
+        locations.append(Login(password='thrasher'))
+
+        session.add_all(locations)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_most_popular_passwords(6)
+        expected = [('tricky', 2), ('thrasher', 1)]
 
         assert set(values) == set(expected)

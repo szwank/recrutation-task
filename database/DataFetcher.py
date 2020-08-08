@@ -22,8 +22,8 @@ class DataFetcher:
 
         gender_percentage = session.query(Person.gender,
                                           (cast(100 * func.count(1), Float) / subquery.c.sum_all)) \
-            .group_by(Person.gender) \
-            .all()
+            .group_by(Person.gender)
+
         return self.__get_query_result(gender_percentage)
 
     def __get_session(self):
