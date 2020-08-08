@@ -1,10 +1,11 @@
 from typing import List, Tuple, Any
 
-from sqlalchemy import func, cast, Float
+from sqlalchemy import func, cast, Float, desc
 from sqlalchemy.sql.expression import literal
 from sqlalchemy.orm import Query
 from database.Database import Database
 from database.tables.DayOfBirth import DayOfBirth
+from database.tables.Location import Location
 from database.tables.Person import Person
 
 
@@ -60,3 +61,13 @@ class DataFetcher:
             .select_from(avg_age)
 
         return self.__get_query_result(avg_age_round)
+
+    def get_most_popular_cities(self, how_much):
+        """Returns n most popular cities in database. Information is fetched from table Location."""
+        session = self.__get_session()
+        popular_cities = session.query(Location.city.label('City'), func.count(1).label('Number of occurrences')) \
+            .select_from(Location) \
+            .group_by(Location.city) \
+            .order_by(desc(func.count(1))) \
+            .limit(how_much)
+        return self.__get_query_result(popular_cities)
