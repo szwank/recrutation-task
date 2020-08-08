@@ -20,6 +20,12 @@ class Options:
                                  action='store_true',
                                  help="Returns average age of genders and overall average age.")
 
+        self.parser.add_argument("--cities_popularity", "-c",
+                                 dest="get_cities_popularity",
+                                 nargs='?',
+                                 type=int,
+                                 help="Returns average age of genders and overall average age.")
+
         self.arguments = self.parser.parse_args()
 
     def get_arguments(self) -> argparse.Namespace:
