@@ -1,3 +1,5 @@
+from typing import List, Tuple, Any
+
 from sqlalchemy import func, cast, Float
 from sqlalchemy.sql.expression import literal
 from database.Database import Database
@@ -6,10 +8,12 @@ from database.tables.Person import Person
 
 
 class DataFetcher:
+    """Class for fetching information from database"""
     def __init__(self, database: Database):
         self.__database = database
 
-    def get_gender_percentage(self):
+    def get_gender_percentage(self) -> List[Tuple[Any]]:
+        """Returns percentage of gender in Person table."""
         session = self.__get_session()
         subquery = session.query(func.count(1).label('sum_all')).select_from(Person).subquery()
 
@@ -21,7 +25,9 @@ class DataFetcher:
     def __get_session(self):
         return self.__database.get_session()
 
-    def get_average_age(self):
+    def get_average_age(self) -> List[Tuple[Any]]:
+        """Returns average age of genders and average age of all rows persons. Information are fetched based on tables:
+        Person, DateOfBirth"""
         session = self.__get_session()
         avg_age_by_sex = session.query(Person.gender.label('gender'), func.avg(DayOfBirth.age).label('age')) \
             .select_from(Person)\
