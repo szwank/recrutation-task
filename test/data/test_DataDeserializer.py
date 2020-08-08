@@ -1,6 +1,7 @@
 import datetime
 
 from data.DataDeserializer import DataDeserializer
+from data.PersonData import PersonData
 
 
 class TestDataDeserializer:
@@ -171,3 +172,13 @@ class TestDataDeserializer:
 
         assert id.name == expected['name']
         assert id.value == expected['value']
+
+
+    def test_deserialize_many_returns_PersonData_list(self):
+        data_deserializer = DataDeserializer()
+
+        result = data_deserializer.deserialize_many([self.data, self.data])
+
+        assert isinstance(result, list)
+        assert isinstance(result[0], PersonData)
+        assert isinstance(result[1], PersonData)

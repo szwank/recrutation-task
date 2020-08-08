@@ -1,3 +1,5 @@
+from typing import List
+
 from .CoordinatesData import CoordinatesData
 from .NameData import NameData
 from .PersonData import PersonData
@@ -11,6 +13,14 @@ from .TimeZoneData import TimeZoneData
 
 
 class DataDeserializer:
+
+    def deserialize_many(self, data: List[dict]):
+        deserialized_data = []
+        for dictionary in data:
+            deserialized_data.append(self.deserialize(dictionary))
+
+        return deserialized_data
+
 
     @staticmethod
     def deserialize(data: dict) -> PersonData:
