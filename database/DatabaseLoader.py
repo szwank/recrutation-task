@@ -18,28 +18,35 @@ class DatabaseLoader:
     def __init__(self, database: Database):
         self.__database = database
 
-    def load_person_data(self, person_data: PersonData):
+    def load_person_data(self, person_data: PersonData) -> Person:
         session = self.__get_session()
 
-        self.load_location_data(person_data.location)
-        session.add(ID.from_data(person_data.id))
-        session.add(Registered.from_data(person_data.registered))
-        session.add(Login.from_data(person_data.login))
-        session.add(DayOfBirth.from_data(person_data.day_of_birth))
-        session.add(Name.from_data(person_data.name))
-        session.add(Person.from_data(person_data))
+        person = Person.from_data(person_data)
 
+        person.id_relationship = [ID.from_data(person_data.id)]
+        person.registered = [Registered.from_data(person_data.registered)]
+        person.login = [Login.from_data(person_data.login)]
+        person.day_of_birth = [DayOfBirth.from_data(person_data.day_of_birth)]
+        person.name = [Name.from_data(person_data.name)]
+        person.location = [self.load_location_data(person_data.location)]
+
+        session.add(person)
         session.commit()
+        session.close()
+        return person
 
     def __get_session(self):
         return self.__database.get_session()
 
-    def load_location_data(self, location_data: LocationData) -> None:
+    def load_location_data(self, location_data: LocationData) -> Location:
         session = self.__get_session()
 
-        session.add(Street.from_data(location_data.street))
-        session.add(TimeZone.from_data(location_data.timezone))
-        session.add(Coordinates.from_data(location_data.coordinates))
-        session.add(Location.from_data(location_data))
+        location = Location.from_data(location_data)
+        location.timezone = [TimeZone.from_data(location_data.timezone)]
+        location.coordinates = [Coordinates.from_data(location_data.coordinates)]
+        location.street = [Street.from_data(location_data.street)]
 
+        session.add(location)
         session.commit()
+        session.close()
+        return location
