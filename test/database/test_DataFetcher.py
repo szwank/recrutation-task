@@ -1,5 +1,6 @@
 from database.Database import Database
 from database.tables.DayOfBirth import DayOfBirth
+from database.tables.Location import Location
 from database.tables.Person import Person
 from database.DataFetcher import DataFetcher
 
@@ -19,10 +20,10 @@ class TestDataFetcher:
 
         data_fetcher = DataFetcher(database)
 
-        result = data_fetcher.get_gender_percentage()
+        values, columns = data_fetcher.get_gender_percentage()
         expected = [('male', 25), ('female', 75)]
 
-        assert set(result) == set(expected)
+        assert set(values) == set(expected)
 
     def test_get_gender_percentage_single_gender(self):
         database = Database(':memory:')
@@ -36,10 +37,10 @@ class TestDataFetcher:
 
         data_fetcher = DataFetcher(database)
 
-        result = data_fetcher.get_gender_percentage()
+        values, columns = data_fetcher.get_gender_percentage()
         expected = [('female', 100)]
 
-        assert set(result) == set(expected)
+        assert set(values) == set(expected)
 
     def test_get_average_age_mixed_gender(self):
         database = Database(':memory:')
@@ -58,10 +59,10 @@ class TestDataFetcher:
 
         data_fetcher = DataFetcher(database)
 
-        result = data_fetcher.get_average_age()
+        values, columns = data_fetcher.get_average_age()
         expected = [('female', 10), ('male', 20), ('All', 15)]
 
-        assert set(result) == set(expected)
+        assert set(values) == set(expected)
 
     def test_get_average_age_single_gender(self):
         database = Database(':memory:')
@@ -80,7 +81,74 @@ class TestDataFetcher:
 
         data_fetcher = DataFetcher(database)
 
-        result = data_fetcher.get_average_age()
+        values, columns = data_fetcher.get_average_age()
         expected = [('female', 15), ('All', 15)]
 
-        assert set(result) == set(expected)
+        assert set(values) == set(expected)
+
+    def test_get_most_popular_cities_fetch_one_city_when_there_is_many(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        locations = []
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Augustów'))
+
+        session.add_all(locations)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_most_popular_cities(1)
+        expected = [('Gdańsk', 4)]
+
+        assert set(values) == set(expected)
+
+    def test_get_most_popular_cities_fetch_many_city_when_there_is_many(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        locations = []
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Gdańsk'))
+        locations.append(Location(city='Augustów'))
+
+        session.add_all(locations)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_most_popular_cities(2)
+        expected = [('Gdańsk', 4), ('Sejny', 3)]
+
+        assert set(values) == set(expected)
+
+    def test_get_most_popular_cities_fetch_many_city_when_there_is_one(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        locations = []
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+        locations.append(Location(city='Sejny'))
+
+        session.add_all(locations)
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_most_popular_cities(4)
+        expected = [('Sejny', 3)]
+
+        assert set(values) == set(expected)
