@@ -20,6 +20,8 @@ class Manager:
             self.__load_data()
         elif self.options.get_gender_percentage:
             self.__get_gender_percentage()
+        elif self.options.get_age:
+            self.__get_average_age()
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
@@ -41,8 +43,18 @@ class Manager:
         return data['results']
 
     def __get_gender_percentage(self):
+        """Fetch data about gender and prints it."""
         data_fetcher = DataFetcher(self.__database)
-        information = data_fetcher.get_gender_percentage()
+        information, columns_names = data_fetcher.get_gender_percentage()
 
-        pretty_table = PrettyTable(['Gender', 'Percentage [%]'])
+        pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
+
+    def __get_average_age(self):
+        """Fetch data about age and prints it"""
+        data_fetcher = DataFetcher(self.__database)
+        information, columns_names = data_fetcher.get_average_age()
+
+        pretty_table = PrettyTable(columns_names)
+        pretty_table.show(information)
+
