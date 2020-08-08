@@ -19,11 +19,13 @@ class Manager:
         if self.options.data_path:
             self.__load_data()
         elif self.options.get_gender_percentage:
-            self.__get_gender_percentage()
+            self.__show_gender_percentage()
         elif self.options.get_age:
-            self.__get_average_age()
+            self.__show_average_age()
         elif self.options.get_cities_popularity:
-            self.__get_most_popular_cities(self.options.get_cities_popularity)
+            self.__show_most_popular_cities(self.options.get_cities_popularity)
+        elif self.options.get_password_popularity:
+            self.__show_most_popular_passwords(self.options.get_password_popularity)
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
@@ -44,7 +46,7 @@ class Manager:
 
         return data['results']
 
-    def __get_gender_percentage(self):
+    def __show_gender_percentage(self):
         """Fetch data about gender and prints it."""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_gender_percentage()
@@ -52,7 +54,7 @@ class Manager:
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
 
-    def __get_average_age(self):
+    def __show_average_age(self):
         """Fetch data about age and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_average_age()
@@ -60,10 +62,18 @@ class Manager:
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
 
-    def __get_most_popular_cities(self, how_much):
+    def __show_most_popular_cities(self, how_much):
         """Fetch data about n most popular cities and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_most_popular_cities(how_much)
+
+        pretty_table = PrettyTable(columns_names)
+        pretty_table.show(information)
+
+    def __show_most_popular_passwords(self, how_much):
+        """Fetch data about n most popular passwords and prints it"""
+        data_fetcher = DataFetcher(self.__database)
+        information, columns_names = data_fetcher.get_most_popular_passwords(how_much)
 
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)

@@ -6,6 +6,7 @@ from sqlalchemy.orm import Query
 from database.Database import Database
 from database.tables.DayOfBirth import DayOfBirth
 from database.tables.Location import Location
+from database.tables.Login import Login
 from database.tables.Person import Person
 
 
@@ -21,8 +22,8 @@ class DataFetcher:
 
         gender_percentage = session.query(Person.gender,
                                           (cast(100 * func.count(1), Float) / subquery.c.sum_all)) \
-            .group_by(Person.gender) \
-            .all()
+            .group_by(Person.gender)
+
         return self.__get_query_result(gender_percentage)
 
     def __get_session(self):
@@ -71,3 +72,13 @@ class DataFetcher:
             .order_by(desc(func.count(1))) \
             .limit(how_much)
         return self.__get_query_result(popular_cities)
+
+    def get_most_popular_passwords(self, how_much):
+        """Returns n most popular passwords in database. Information is fetched from table Login."""
+        session = self.__get_session()
+        popular_passwords = session.query(Login.password.label('Password'), func.count(1).label('Number of occurrences')) \
+            .select_from(Login) \
+            .group_by(Login.password) \
+            .order_by(desc(func.count(1))) \
+            .limit(how_much)
+        return self.__get_query_result(popular_passwords)

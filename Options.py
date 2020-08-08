@@ -26,6 +26,12 @@ class Options:
                                  type=int,
                                  help="Returns average age of genders and overall average age.")
 
+        self.parser.add_argument("--password_popularity", "-p",
+                                 dest="get_password_popularity",
+                                 nargs='?',
+                                 type=int,
+                                 help="Returns average age of genders and overall average age.")
+
         self.arguments = self.parser.parse_args()
 
     def get_arguments(self) -> argparse.Namespace:
