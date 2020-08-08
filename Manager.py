@@ -71,7 +71,7 @@ class Manager:
         pretty_table.show(information)
 
     def __show_most_popular_passwords(self, how_much):
-        """Fetch data about n most popular cities and prints it"""
+        """Fetch data about n most popular passwords and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_most_popular_passwords(how_much)
 
