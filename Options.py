@@ -20,7 +20,7 @@ class Options:
         self.parser.add_argument("--average_age", "-a",
                                  dest="get_age_gender",
                                  choices=['male', 'female', 'both'],
-                                 help="Displays average age of chosen gender.")
+                                 help="Displays average age of chosen gender. Available choices are: male, female, both.")
 
         self.parser.add_argument("--cities_popularity", "-c",
                                  dest="get_cities_popularity",
@@ -43,7 +43,7 @@ class Options:
                                  dest="get_born_between",
                                  nargs=2,
                                  help="Displays persons born between passed dates. First date should be the earlier"
-                                      "one.",
+                                      "one. Dates should be in format YYYY-MM-DD",
                                  metavar=('MIN_DATE', 'MAX_DATE'))
 
         self.arguments = self.parser.parse_args()
