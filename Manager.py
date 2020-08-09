@@ -39,6 +39,9 @@ class Manager:
         elif self.options.get_born_between:
             self.__show_persons_born_between(*self.options.get_born_between)
 
+        else:
+            print("Unknown argument or no argument passed.")
+
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
