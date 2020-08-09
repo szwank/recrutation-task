@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 from database.Database import Database
@@ -223,3 +225,31 @@ class TestDataFetcher:
         values, columns = data_fetcher.get_strongest_password()
 
         assert set(values) == set([(expected, )])
+
+    def test_get_persons_born_between(self):
+        database = Database(':memory:')
+        session = database.get_session()
+
+        dob_1 = DayOfBirth(date=datetime(year=1963, month=7, day=15))
+        dob_2 = DayOfBirth(date=datetime(year=1975, month=1, day=3))
+        dob_3 = DayOfBirth(date=datetime(year=2020, month=3, day=20))
+
+        person_1 = Person(email='to early')
+        person_1.day_of_birth = [dob_1]
+        person_2 = Person(email='should be returned')
+        person_2.day_of_birth = [dob_2]
+        person_3 = Person(email='to late')
+        person_3.day_of_birth = [dob_3]
+
+        min_date = datetime(year=1970, month=1, day=1)
+        max_date = datetime(year=1999, month=12, day=30)
+
+        session.add_all([person_1, person_2, person_3])
+        session.commit()
+
+        data_fetcher = DataFetcher(database)
+
+        values, columns = data_fetcher.get_persons_born_between(min_date=min_date, max_date=max_date)
+
+        assert len(values) == 1
+        assert values[0].email == 'should be returned'

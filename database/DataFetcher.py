@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Tuple, Any
 
 from sqlalchemy import func, cast, Float, desc
@@ -116,3 +117,12 @@ class DataFetcher:
             .limit(1)
 
         return self.__get_query_result(passwords_points)
+
+    def get_persons_born_between(self, min_date: datetime.datetime, max_date: datetime.datetime) -> Tuple[List[Person], List[str]]:
+        """Returns persons born between passed dates. Information is fetched from tables: Person, DayOfBirth."""
+        session = self.__get_session()
+        users = session.query(Person) \
+            .join(DayOfBirth) \
+            .filter(DayOfBirth.date >= min_date) \
+            .filter(DayOfBirth.date <= max_date)
+        return self.__get_query_result(users)
