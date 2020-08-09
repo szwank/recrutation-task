@@ -2,7 +2,6 @@ import json
 import argparse
 import datetime
 
-from DateManipulator import DateManipulator
 from PrettyTable import PrettyTable
 from data.DataDeserializer import DataDeserializer
 from database.DataFetcher import DataFetcher
@@ -38,6 +37,9 @@ class Manager:
 
         elif self.options.get_born_between:
             self.__show_persons_born_between(*self.options.get_born_between)
+
+        else:
+            print("Unknown argument or no argument passed.")
 
 
     def __load_data(self):

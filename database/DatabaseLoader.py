@@ -16,11 +16,12 @@ from database.tables.TimeZone import TimeZone
 
 
 class DatabaseLoader:
-    """Class for loading data to database"""
+    """Class loading data to database"""
     def __init__(self, database: Database):
         self.__database = database
 
     def load_many_persons_data(self, data: List[PersonData]) -> List[Person]:
+        """Loads data in form of list of PersonData into database."""
         persons = []
 
         for person_data in data:
@@ -34,6 +35,7 @@ class DatabaseLoader:
         return persons
 
     def load_person_data(self, person_data: PersonData) -> Person:
+        """Loads data in form of PersonData into database."""
         session = self.__get_session()
 
         person = self.__create_person(person_data)

@@ -13,14 +13,13 @@ from .TimeZoneData import TimeZoneData
 
 
 class DataDeserializer:
-
+    """Class deserializing data into objects"""
     def deserialize_many(self, data: List[dict]):
         deserialized_data = []
         for dictionary in data:
             deserialized_data.append(self.deserialize(dictionary))
 
         return deserialized_data
-
 
     @staticmethod
     def deserialize(data: dict) -> PersonData:
