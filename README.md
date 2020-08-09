@@ -1,7 +1,7 @@
 # Zadanie rekrutacyjne Profil Software
 ## Uruchomienie projektu
-Projekt używa wersji pythona 3.7. Biblioteki użyte w projekcie znajdują się w pliku requirements.txt. W celu zainstalowania koniecznych bibliotek
-z linii poleceń wywołaj:
+Projekt wykorzystuje wersję pythona 3.7. Biblioteki użyte w projekcie znajdują się w pliku requirements.txt.
+W celu zainstalowania koniecznych bibliotek z linii poleceń wywołaj:
 ```javascript
 pip install -r requirements.txt
 ```
@@ -28,7 +28,7 @@ python person.py -h
 python person.py --load_data PATH_TO_DATA
 ```
 gdzie:
-PATH_TO_DATA- ścierzka do pliku z danymi, przykładowo: python person.py --load_data inputs/persons.json, domyślna
+PATH_TO_DATA- ścieżka do pliku z danymi, przykładowo: python person.py --load_data inputs/persons.json, domyślna
 ścieżka ustawiona jest na inputs/persons.json
 
 * Załadowanie losowych danych
@@ -77,4 +77,4 @@ python person.py --born_between MIN_DATE MAX_DATE
 gdzie:
 MIN_DATE - jest datą ograniczającą od dołu,
 MAX_DATE - jest datą ograniczającą od góry.
-Daty powinny byś w formacie YYYY-MM-DD
+Daty powinny być w formacie YYYY-MM-DD
