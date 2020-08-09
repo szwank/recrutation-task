@@ -18,18 +18,25 @@ python person.py --load_random_data HOW_MANY
 gdzie HOW_MANY mówi ile losowych użytkowników załadować
 
 ## Dostępne komendy
-* wyświetlenie pomocy:
+* Wyświetlenie pomocy:
 ```javascript
 python person.py -h
 ```
 
-* załadowanie danych do bazy danych. 
+* Załadowanie danych do bazy danych. 
 ```javascript
 python person.py --load_data PATH_TO_DATA
 ```
 gdzie:
 PATH_TO_DATA- ścierzka do pliku z danymi, przykładowo: python person.py --load_data inputs/persons.json, domyślna
 ścieżka ustawiona jest na inputs/persons.json
+
+* Załadowanie losowych danych
+```javascript
+python person.py --load_random_data HOW_MANY
+```
+gdzie:
+HOW_MANY - ilość losowych użytkowników załadowanych do bazy
 
 * Wyświetlenie procentu kobiet i męszczyzn
 ```javascript
