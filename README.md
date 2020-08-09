@@ -11,6 +11,12 @@ Przed wyświetleniem danych nalezy załadować informacje do bazy danych w tym c
 python person.py --load_data
 ```
 
+lub załaduj losowe dane wywołując:
+```javascript
+python person.py --load_random_data HOW_MANY
+```
+gdzie HOW_MANY mówi ile losowych użytkowników załadować
+
 ## Dostępne komendy
 * wyświetlenie pomocy:
 ```javascript

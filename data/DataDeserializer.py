@@ -14,10 +14,11 @@ from .TimeZoneData import TimeZoneData
 
 class DataDeserializer:
     """Class deserializing data into objects"""
-    def deserialize_many(self, data: List[dict]):
+    @staticmethod
+    def deserialize_many(data: List[dict]):
         deserialized_data = []
         for dictionary in data:
-            deserialized_data.append(self.deserialize(dictionary))
+            deserialized_data.append(DataDeserializer.deserialize(dictionary))
 
         return deserialized_data
 

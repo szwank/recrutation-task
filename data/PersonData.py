@@ -1,4 +1,7 @@
 import re
+from typing import List
+
+from randomuser import RandomUser
 
 from .DayOfBirthData import DayOfBirthData
 from .LocationData import LocationData
@@ -31,3 +34,13 @@ class PersonData:
     def __remove_special_characters(string: str) -> str:
         regex = '[^A-Za-z0-9]+'
         return re.sub(regex, '', string)
+
+
+def create_random_person_data(how_many: int) -> List[PersonData]:
+    # import is in function because circular import
+    from .DataDeserializer import DataDeserializer
+    users = RandomUser.generate_users(how_many)
+
+    users_data = [user._data for user in users]
+
+    return DataDeserializer.deserialize_many(users_data)
