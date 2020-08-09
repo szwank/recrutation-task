@@ -59,7 +59,7 @@ class DataFetcher:
         return [(row,) for row in data]
 
 
-    def get_average_age(self) -> Tuple[List[Tuple[Any]], List[str]]:
+    def get_average_age(self, gender:str) -> Tuple[List[Tuple[Any]], List[str]]:
         """Returns average age of genders and average age of all rows persons. Information are fetched based on tables:
         Person, DateOfBirth"""
         session = self.__get_session()
@@ -75,8 +75,8 @@ class DataFetcher:
         avg_age = avg_age_by_sex.union_all(avg_age_on_all).subquery()
 
         avg_age_round = session.query(avg_age.c.gender.label('Gender'), func.round(avg_age.c.age, 2).label('Average_age')) \
-            .select_from(avg_age)
-
+            .select_from(avg_age)\
+            .filter(avg_age.c.gender == gender)
         return self.__get_query_result(avg_age_round)
 
     def get_most_popular_cities(self, how_much):

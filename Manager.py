@@ -20,16 +20,22 @@ class Manager:
         """Invokes the appropriate action based on passed arguments"""
         if self.options.data_path:
             self.__load_data()
+
         elif self.options.get_gender_percentage:
             self.__show_gender_percentage()
-        elif self.options.get_age:
-            self.__show_average_age()
+
+        elif self.options.get_age_gender:
+            self.__show_average_age(self.options.get_age_gender)
+
         elif self.options.get_cities_popularity:
             self.__show_most_popular_cities(self.options.get_cities_popularity)
+
         elif self.options.get_password_popularity:
             self.__show_most_popular_passwords(self.options.get_password_popularity)
+
         elif self.options.get_strongest_password:
             self.__show_strongest_password()
+
         elif self.options.get_born_between:
             self.__show_persons_born_between(*self.options.get_born_between)
 
@@ -61,10 +67,10 @@ class Manager:
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
 
-    def __show_average_age(self):
+    def __show_average_age(self, gender):
         """Fetch and display data about age and prints it"""
         data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_average_age()
+        information, columns_names = data_fetcher.get_average_age(gender)
 
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
