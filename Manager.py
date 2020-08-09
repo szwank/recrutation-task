@@ -3,7 +3,7 @@ import argparse
 import datetime
 from typing import List
 
-from PrettyTable import PrettyTable
+from PrettyTablePrinter import PrettyTablePrinter
 from data.DataDeserializer import DataDeserializer
 from data.PersonData import PersonData, create_random_person_data
 from database.DataFetcher import DataFetcher
@@ -16,6 +16,7 @@ class Manager:
     def __init__(self, options: argparse.Namespace, database: Database):
         self.options = options
         self.__database = database
+        self.__data_fetcher = DataFetcher(database)
 
     def run(self):
         """Invokes the appropriate action based on passed arguments"""
@@ -75,42 +76,37 @@ class Manager:
 
     def __show_gender_percentage(self):
         """Fetch and display data about gender and prints it."""
-        data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_gender_percentage()
+        information, columns_names = self.__data_fetcher.get_gender_percentage()
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
     def __show_average_age(self, gender):
         """Fetch and display data about age and prints it"""
-        data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_average_age(gender)
+        information, columns_names = self.__data_fetcher.get_average_age(gender)
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
     def __show_most_popular_cities(self, how_much):
         """Fetch and display data about n most popular cities and prints it"""
-        data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_most_popular_cities(how_much)
+        information, columns_names = self.__data_fetcher.get_most_popular_cities(how_much)
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
     def __show_most_popular_passwords(self, how_much):
         """Fetch and display data about n most popular passwords and prints it"""
-        data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_most_popular_passwords(how_much)
+        information, columns_names = self.__data_fetcher.get_most_popular_passwords(how_much)
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
     def __show_strongest_password(self):
         """Fetch and display data about n most popular passwords and prints it"""
-        data_fetcher = DataFetcher(self.__database)
-        information, columns_names = data_fetcher.get_strongest_password()
+        information, columns_names = self.__data_fetcher.get_strongest_password()
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
     def __show_persons_born_between(self, min_date: str, max_date: str):
@@ -121,9 +117,9 @@ class Manager:
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_persons_born_between(min_date, max_date)
 
-        pretty_table = PrettyTable(columns_names)
+        pretty_table = PrettyTablePrinter(columns_names)
         pretty_table.show(information)
 
-
-    def __str_to_date(self, date: str):
+    def __str_to_date(self, date: str) -> datetime:
+        """Converts string to datetime. Date should be in from of YYYY-MM-DD."""
         return datetime.datetime.strptime(date, '%Y-%m-%d')
