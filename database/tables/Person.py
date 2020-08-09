@@ -28,6 +28,12 @@ class Person(Base):
         return f"<Person(gender={self.gender}, email={self.email}, phone={self.phone}," \
                f" cell={self.cell}, nat={self.nat})>"
 
+    def __str__(self):
+        return self.__repr__()
+
+    def __format__(self, fmt):
+        return f'{{:{fmt}}}'.format(self.__repr__())
+
     @classmethod
     def from_data(cls, data: PersonData) -> Person:
         """Creates instance of class from PersonData object"""
