@@ -8,9 +8,8 @@ pip install -r requirements.txt
 
 Przed wyświetleniem danych nalezy załadować informacje do bazy danych w tym celu wywołaj:
 ```javascript
-python person.py --load_data PATH_TO_DATA
+python person.py --load_data
 ```
-gdzie PATH_TO_DATA jest względną scieżką do pliku z danymi
 
 ## Dostępne komendy
 * wyświetlenie pomocy:
@@ -23,7 +22,8 @@ python person.py -h
 python person.py --load_data PATH_TO_DATA
 ```
 gdzie:
-PATH_TO_DATA- ścierzka do pliku z danymi, przykładowo: python person.py --load_data inputs/persons.json
+PATH_TO_DATA- ścierzka do pliku z danymi, przykładowo: python person.py --load_data inputs/persons.json, domyślna
+ścieżka ustawiona jest na inputs/persons.json
 
 * Wyświetlenie procentu kobiet i męszczyzn
 ```javascript

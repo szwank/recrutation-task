@@ -10,6 +10,8 @@ class Options:
         self.parser.add_argument("--load_data", "-l",
                                  dest="data_path",
                                  help="Create database if needed and load data from file in passed path.",
+                                 nargs='?',
+                                 const='inputs/persons.json',
                                  metavar='PATH_TO_DATA')
 
         self.parser.add_argument("--gender_percentage", "-gp",
