@@ -1,6 +1,8 @@
 import json
 import argparse
+import datetime
 
+from DateManipulator import DateManipulator
 from PrettyTable import PrettyTable
 from data.DataDeserializer import DataDeserializer
 from database.DataFetcher import DataFetcher
@@ -28,6 +30,9 @@ class Manager:
             self.__show_most_popular_passwords(self.options.get_password_popularity)
         elif self.options.get_strongest_password:
             self.__show_strongest_password()
+        elif self.options.get_born_between:
+            self.__show_persons_born_between(*self.options.get_born_between)
+
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
@@ -49,7 +54,7 @@ class Manager:
         return data['results']
 
     def __show_gender_percentage(self):
-        """Fetch data about gender and prints it."""
+        """Fetch and display data about gender and prints it."""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_gender_percentage()
 
@@ -57,7 +62,7 @@ class Manager:
         pretty_table.show(information)
 
     def __show_average_age(self):
-        """Fetch data about age and prints it"""
+        """Fetch and display data about age and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_average_age()
 
@@ -65,7 +70,7 @@ class Manager:
         pretty_table.show(information)
 
     def __show_most_popular_cities(self, how_much):
-        """Fetch data about n most popular cities and prints it"""
+        """Fetch and display data about n most popular cities and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_most_popular_cities(how_much)
 
@@ -73,7 +78,7 @@ class Manager:
         pretty_table.show(information)
 
     def __show_most_popular_passwords(self, how_much):
-        """Fetch data about n most popular passwords and prints it"""
+        """Fetch and display data about n most popular passwords and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_most_popular_passwords(how_much)
 
@@ -81,10 +86,23 @@ class Manager:
         pretty_table.show(information)
 
     def __show_strongest_password(self):
-        """Fetch data about n most popular passwords and prints it"""
+        """Fetch and display data about n most popular passwords and prints it"""
         data_fetcher = DataFetcher(self.__database)
         information, columns_names = data_fetcher.get_strongest_password()
 
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
 
+    def __show_persons_born_between(self, min_date: str, max_date: str):
+        """Fetch and display persons born between passed dates."""
+        min_date = self.__str_to_date(min_date)
+        max_date = self.__str_to_date(max_date)
+
+        data_fetcher = DataFetcher(self.__database)
+        information, columns_names = data_fetcher.get_persons_born_between(min_date, max_date)
+
+        pretty_table = PrettyTable(columns_names)
+        pretty_table.show(information)
+
+    def __str_to_date(self, date: str):
+        return datetime.datetime.strptime(date, '%Y-%m-%d')
