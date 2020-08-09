@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Tuple, Any
 
 from sqlalchemy import func, cast, Float, desc
@@ -38,9 +39,25 @@ class DataFetcher:
         return columns_name
 
     def __get_query_result(self, query: Query) -> Tuple[List[Tuple[Any]], List[str]]:
+        """Fetch query result and returns result and column names of query. Ensures that query result is in form
+        List of Tuples."""
         columns_names = self.__get_columns_name(query)
         result = query.all()
+        if not self.__is_proper_format(result):
+            result = self.__to_list_of_tuples(result)
         return result, columns_names
+
+    def __is_proper_format(self, result) -> bool:
+        """Checks if result is in form of list of tuples."""
+        if isinstance(result, list):
+            return isinstance(result[0], tuple)
+        else:
+            return False
+
+    def __to_list_of_tuples(self, data: List[Any]) -> List[Tuple[Any]]:
+        """Convert list of elements into list of tuples of elements."""
+        return [(row,) for row in data]
+
 
     def get_average_age(self) -> Tuple[List[Tuple[Any]], List[str]]:
         """Returns average age of genders and average age of all rows persons. Information are fetched based on tables:
@@ -116,3 +133,12 @@ class DataFetcher:
             .limit(1)
 
         return self.__get_query_result(passwords_points)
+
+    def get_persons_born_between(self, min_date: datetime.datetime, max_date: datetime.datetime) -> Tuple[List[Person], List[str]]:
+        """Returns persons born between passed dates. Information is fetched from tables: Person, DayOfBirth."""
+        session = self.__get_session()
+        users = session.query(Person) \
+            .join(DayOfBirth) \
+            .filter(DayOfBirth.date >= min_date) \
+            .filter(DayOfBirth.date <= max_date)
+        return self.__get_query_result(users)

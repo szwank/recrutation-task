@@ -37,6 +37,11 @@ class Options:
                                  action='store_true',
                                  help="Returns strongest password in database.")
 
+        self.parser.add_argument("--born_between", "-b",
+                                 dest="get_born_between",
+                                 nargs=2,
+                                 help="Returns persons born between passed dates. First date should be the earlier one.")
+
         self.arguments = self.parser.parse_args()
 
     def get_arguments(self) -> argparse.Namespace:
