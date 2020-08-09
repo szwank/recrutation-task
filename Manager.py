@@ -57,6 +57,7 @@ class Manager:
         deserialized_data = data_deserializer.deserialize_many(data)
 
         self.__upload_persons_data(deserialized_data)
+        print("Data uploaded.")
 
     def __upload_persons_data(self, deserialized_data: List[PersonData]):
         database_loader = DatabaseLoader(self.__database)
@@ -73,6 +74,7 @@ class Manager:
     def __load_random_persons_data(self, how_many: int):
         persons = create_random_person_data(how_many)
         self.__upload_persons_data(persons)
+        print("Data uploaded.")
 
     def __show_gender_percentage(self):
         """Fetch and display data about gender and prints it."""
