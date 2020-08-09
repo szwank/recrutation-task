@@ -12,6 +12,12 @@ class Options:
                                  help="Create database if needed and load data from file in passed path.",
                                  metavar='PATH_TO_DATA')
 
+        self.parser.add_argument("--load_random_data", "-lr",
+                                 dest="load_random",
+                                 type=int,
+                                 help="Create database if needed and load randomly generated person data",
+                                 metavar='HOW_MANY')
+
         self.parser.add_argument("--gender_percentage", "-gp",
                                  dest="get_gender_percentage",
                                  action='store_true',

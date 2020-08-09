@@ -1,9 +1,11 @@
 import json
 import argparse
 import datetime
+from typing import List
 
 from PrettyTable import PrettyTable
 from data.DataDeserializer import DataDeserializer
+from data.PersonData import PersonData, create_random_person_data
 from database.DataFetcher import DataFetcher
 from database.Database import Database
 from database.DatabaseLoader import DatabaseLoader
@@ -19,6 +21,9 @@ class Manager:
         """Invokes the appropriate action based on passed arguments"""
         if self.options.data_path:
             self.__load_data()
+
+        elif self.options.load_random:
+            self.__load_random_persons_data(self.options.load_random)
 
         elif self.options.get_gender_percentage:
             self.__show_gender_percentage()
@@ -44,13 +49,16 @@ class Manager:
 
     def __load_data(self):
         """Loads data from file to database. Path to file is passed by options field."""
-        database_loader = DatabaseLoader(self.__database)
 
         data = self.__load_results()
 
         data_deserializer = DataDeserializer()
         deserialized_data = data_deserializer.deserialize_many(data)
 
+        self.__upload_persons_data(deserialized_data)
+
+    def __upload_persons_data(self, deserialized_data: List[PersonData]):
+        database_loader = DatabaseLoader(self.__database)
         database_loader.load_many_persons_data(deserialized_data)
 
     def __load_results(self):
@@ -60,6 +68,10 @@ class Manager:
             data = json.loads(file.read())
 
         return data['results']
+
+    def __load_random_persons_data(self, how_many: int):
+        persons = create_random_person_data(how_many)
+        self.__upload_persons_data(persons)
 
     def __show_gender_percentage(self):
         """Fetch and display data about gender and prints it."""
@@ -111,6 +123,7 @@ class Manager:
 
         pretty_table = PrettyTable(columns_names)
         pretty_table.show(information)
+
 
     def __str_to_date(self, date: str):
         return datetime.datetime.strptime(date, '%Y-%m-%d')
