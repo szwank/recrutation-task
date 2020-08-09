@@ -20,6 +20,7 @@ class PrettyTable:
         return max_lengths
 
     def show(self, data: List[Iterable]) -> None:
+        """Displays tabular data."""
         columns_lengths = self.__get_table_columns_lengths(data)
         print_statement = self.__get_print_statement(columns_lengths)
 
