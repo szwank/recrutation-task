@@ -16,8 +16,9 @@ class Options:
                                  help="Returns gender percentage loaded to database.")
 
         self.parser.add_argument("--average_age", "-a",
-                                 dest="get_age",
-                                 action='store_true',
+                                 dest="get_age_gender",
+                                 choices=['male', 'female', 'both'],
+                                 nargs='?',
                                  help="Returns average age of genders and overall average age.")
 
         self.parser.add_argument("--cities_popularity", "-c",

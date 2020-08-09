@@ -30,7 +30,7 @@ class TestDataFetcher:
 
         assert set(values) == set(expected)
 
-    def test_get_gender_percentage_single_gender(self):
+    def test_get_gender_percentage_female(self):
         database = Database(':memory:')
         session = database.get_session()
 
@@ -47,7 +47,14 @@ class TestDataFetcher:
 
         assert set(values) == set(expected)
 
-    def test_get_average_age_mixed_gender(self):
+    average_age = [
+        ('male', [('male', 29.5)]),
+        ('female', [('female', 10)]),
+        ('both', [('both', 23)])
+    ]
+
+    @pytest.mark.parametrize('gender,expected', average_age)
+    def test_get_average_age_botch(self, gender, expected):
         database = Database(':memory:')
         session = database.get_session()
 
@@ -57,37 +64,16 @@ class TestDataFetcher:
         person_2 = Person(gender='male')
         dbo_2 = DayOfBirth(age=20)
         person_2.day_of_birth = [dbo_2]
+        person_3 = Person(gender='male')
+        dbo_3 = DayOfBirth(age=39)
+        person_3.day_of_birth = [dbo_3]
 
-        session.add(person_1)
-        session.add(person_2)
+        session.add_all([person_1, person_2, person_3])
         session.commit()
 
         data_fetcher = DataFetcher(database)
 
-        values, columns = data_fetcher.get_average_age()
-        expected = [('female', 10), ('male', 20), ('both', 15)]
-
-        assert set(values) == set(expected)
-
-    def test_get_average_age_single_gender(self):
-        database = Database(':memory:')
-        session = database.get_session()
-
-        person_1 = Person(gender='female')
-        dbo_1 = DayOfBirth(age=10)
-        person_1.day_of_birth = [dbo_1]
-        person_2 = Person(gender='female')
-        dbo_2 = DayOfBirth(age=20)
-        person_2.day_of_birth = [dbo_2]
-
-        session.add(person_1)
-        session.add(person_2)
-        session.commit()
-
-        data_fetcher = DataFetcher(database)
-
-        values, columns = data_fetcher.get_average_age()
-        expected = [('female', 15), ('both', 15)]
+        values, columns = data_fetcher.get_average_age(gender)
 
         assert set(values) == set(expected)
 
