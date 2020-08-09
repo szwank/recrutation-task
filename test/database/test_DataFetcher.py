@@ -252,4 +252,4 @@ class TestDataFetcher:
         values, columns = data_fetcher.get_persons_born_between(min_date=min_date, max_date=max_date)
 
         assert len(values) == 1
-        assert values[0].email == 'should be returned'
+        assert values[0][0].email == 'should be returned'
