@@ -2,7 +2,6 @@ import json
 import argparse
 import datetime
 
-from DateManipulator import DateManipulator
 from PrettyTable import PrettyTable
 from data.DataDeserializer import DataDeserializer
 from database.DataFetcher import DataFetcher
