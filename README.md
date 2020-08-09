@@ -12,6 +12,12 @@ python person.py --load_data PATH_TO_DATA
 ```
 gdzie PATH_TO_DATA jest względną scieżką do pliku z danymi
 
+lub załaduj losowe dane wywołując:
+```javascript
+python person.py --load_random_data HOW_MANY
+```
+gdzie HOW_MANY mówi ile losowych użytkowników załadować
+
 ## Dostępne komendy
 * wyświetlenie pomocy:
 ```javascript
