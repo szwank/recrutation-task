@@ -2,7 +2,7 @@ import itertools
 from typing import List, Iterable
 
 
-class PrettyTable:
+class PrettyTablePrinter:
     """Class for pretty printing tabular data."""
     def __init__(self, columns_names: List[str], margin: int = 3):
         self.__columns_names = columns_names
